@@ -1,5 +1,3 @@
-import { SIGINT } from "constants";
-
 //dependencies
 const request = require("request");
 

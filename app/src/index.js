@@ -4,8 +4,9 @@ const request = require("request");
 //exports
 module.exports = exports = init;
 
+//methods
 function init() {
-  if (process.argv.length < 1) {
+  if (process.argv.length < 3) {
     console.log(
       "Usage: \n" +
         "node index.js <message> [<api> <api-key> <organization> <username> <password>]"
@@ -24,11 +25,10 @@ function init() {
     password: process.argv[7] || "pQw4md4YZR"
   };
 
-  console.info(JSON.stringify(MESSAGE, 0, " "));
+  console.info(MESSAGE);
   console.info(JSON.stringify(API, 0, " "));
   console.info(JSON.stringify(CREDENTIALS, 0, " "));
-
-
+  /*
   signIn(API, CREDENTIALS, function(err, accessToken) {
     if (err) {
       console.error(err, err.stack);
@@ -37,14 +37,36 @@ function init() {
     process.env.ACCESSTOKEN = accessToken;
     return sendMessage(API, MESSAGE, accessToken, function(err, status) {
       if (err) {
-        console.log(err, err.stack);
+        console.error(err, err.stack);
         process.exit();
       }
-      if (status < 400) console.log("Status nice");
-      if (status > 400) console.log("Status bad");
-      console.log("Send Message done with : " + status);
+      if (status < 400) console.info("Status nice");
+      if (status > 400) console.info("Status bad");
+      console.info("Send Message done with : " + status);
     });
   });
+  */
+  
+  return signIn(API, CREDENTIALS, resolveSignIn);
+
+  function resolveSignIn(err, accessToken) {
+    if (err) {
+      console.error(err, err.stack);
+      process.exit();
+    }
+    process.env.ACCESSTOKEN = accessToken;
+    return sendMessage(API, MESSAGE, accessToken, resolveMessages);
+  }
+
+  function resolveMessages(err, status) {
+    if (err) {
+      console.error(err, err.stack);
+      process.exit();
+    }
+    if (status < 400) console.info("Status nice");
+    if (status > 400) console.info("Status bad");
+    console.info("Send Message done with : " + status);
+  }
 }
 
 function signIn(API, CREDENTIALS, cb) {
@@ -64,7 +86,7 @@ function signIn(API, CREDENTIALS, cb) {
     if (err) {
       return cb(err);
     }
-    console.log("Sign in done with: " + res.statusCode)
+    console.log("Sign in done with: " + res.statusCode);
     return cb(null, body["access-token"]);
   });
 }

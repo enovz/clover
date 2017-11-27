@@ -28,25 +28,7 @@ function init() {
   console.info(MESSAGE);
   console.info(JSON.stringify(API, 0, " "));
   console.info(JSON.stringify(CREDENTIALS, 0, " "));
-  /*
-  signIn(API, CREDENTIALS, function(err, accessToken) {
-    if (err) {
-      console.error(err, err.stack);
-      process.exit();
-    }
-    process.env.ACCESSTOKEN = accessToken;
-    return sendMessage(API, MESSAGE, accessToken, function(err, status) {
-      if (err) {
-        console.error(err, err.stack);
-        process.exit();
-      }
-      if (status < 400) console.info("Status nice");
-      if (status > 400) console.info("Status bad");
-      console.info("Send Message done with : " + status);
-    });
-  });
-  */
-  
+
   return signIn(API, CREDENTIALS, resolveSignIn);
 
   function resolveSignIn(err, accessToken) {

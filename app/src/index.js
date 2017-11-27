@@ -47,7 +47,7 @@ function init() {
     }
     if (status < 400) console.info("Status nice");
     if (status > 400) console.info("Status bad");
-    console.info("Send Message done with : " + status);
+    console.info("Send Message completed with : " + status);
   }
 }
 
